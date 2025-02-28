@@ -1,6 +1,6 @@
 {
   "name": "todolist",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "An Electron application with Vue and TypeScript",
   "main": "./out/main/index.js",
   "author": "example.com",
@@ -28,6 +28,7 @@
     "@electron-toolkit/eslint-config-prettier": "3.0.0",
     "@electron-toolkit/eslint-config-ts": "^3.0.0",
     "@electron-toolkit/tsconfig": "^1.0.1",
+    "@types/electron": "^1.4.38",
     "@types/node": "^22.13.4",
     "@vitejs/plugin-vue": "^5.2.1",
     "electron": "^34.2.0",

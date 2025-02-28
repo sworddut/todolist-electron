@@ -25,7 +25,7 @@ function createWindow(): void {
     }
   })
 
-  const setNormal = () => {
+  const setNormal = ():void => {
     mainWindow.setBounds({
       x: width - windowWidth / 2,
       y: (height - windowHeight) / 2,
@@ -37,6 +37,11 @@ function createWindow(): void {
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
+  })
+
+  ipcMain.on('close-window', () => {
+    console.log('close-window')
+    mainWindow.close()
   })
 
   ipcMain.on('mouseenter', (_, mousePosition) => {

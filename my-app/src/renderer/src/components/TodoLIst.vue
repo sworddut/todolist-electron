@@ -1,7 +1,9 @@
 <template>
   <div class="todolist">
-    <h2>待办事项</h2>
-    <input v-model="newTask" @keyup.enter="addTask" placeholder="添加新任务，enter确认" class="task-input" />
+    <input v-model="newTask" @keyup.enter="addTask" placeholder="添加新任务，enter确认" class="task-input" 
+      @focus="emit('taskInputFocus')"
+      @blur="emit('taskInputBlur')"
+    />
     <ul class="task-list">
       <li v-for="(task, index) in tasks" :key="index" class="task-item">
         <input type="checkbox" v-model="task.completed" class="task-checkbox" />
@@ -13,8 +15,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, defineEmits } from 'vue'
 
+const emit = defineEmits<{
+  (event: 'taskInputFocus'): void;
+  (event: 'taskInputBlur'): void;
+}>();
 const newTask = ref('')
 const tasks = ref([
   { text: '学习', completed: false },
@@ -35,7 +41,7 @@ const removeTask = (index: number): void => {
 <style scoped>
 .todolist {
   background: #fff;
-  border-radius: 8px;
+  overflow: hidden;
   padding: 20px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
