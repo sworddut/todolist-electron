@@ -4,7 +4,10 @@
       @focus="emit('taskInputFocus')"
       @blur="emit('taskInputBlur')"
     />
-    <ul class="task-list">
+    <div v-if="tasks.length === 0">
+      <Empty />
+    </div>
+    <ul class="task-list" v-else>
       <li v-for="(task, index) in tasks" :key="index" class="task-item">
         <input type="checkbox" v-model="task.completed" class="task-checkbox" />
         <span :class="{ completed: task.completed }" class="task-text">{{ task.text }}</span>
@@ -15,8 +18,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits } from 'vue'
-
+import { ref, defineEmits, onMounted, watch } from 'vue'
+import Empty from './Empty.vue'; // Adjust the path as necessary
 const emit = defineEmits<{
   (event: 'taskInputFocus'): void;
   (event: 'taskInputBlur'): void;
@@ -25,6 +28,18 @@ const newTask = ref('')
 const tasks = ref([
   { text: '学习', completed: false },
 ])
+
+onMounted(() => {
+  const storedTasks = localStorage.getItem('tasks');
+  if (storedTasks) {
+    tasks.value = JSON.parse(storedTasks);
+  }
+});
+
+// Watch for changes in tasks and save to localStorage
+watch(tasks, (newTasks) => {
+  localStorage.setItem('tasks', JSON.stringify(newTasks));
+}, { deep: true });
 
 const addTask = (): void => {
   if (newTask.value.trim()) {
@@ -43,6 +58,7 @@ const removeTask = (index: number): void => {
   background: #fff;
   overflow: hidden;
   padding: 20px;
+  min-height: 220px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
